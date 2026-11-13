@@ -1,0 +1,21 @@
+const { app, BrowserWindow, Menu } = require('electron');
+
+function createWindow() {
+  const w = new BrowserWindow({
+    width: 1280,
+    height: 720,
+    autoHideMenuBar: true,
+    title: 'Bắn chim đồng quê',
+    webPreferences: { contextIsolation: true }
+  });
+  Menu.setApplicationMenu(null);
+  w.loadFile('www/index.html');
+  w.webContents.on('before-input-event', (e, input) => {
+    if (input.key === 'F11' && input.type === 'keyDown') {
+      w.setFullScreen(!w.isFullScreen());
+    }
+  });
+}
+
+app.whenReady().then(createWindow);
+app.on('window-all-closed', () => app.quit());
